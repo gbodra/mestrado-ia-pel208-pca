@@ -163,29 +163,33 @@ def calc_pca(dataset):
     logging.info(feature_vector)
 
     logging.info("*******VALORES FINAIS*******")
-    feature_vector = vector_to_matrix(feature_vector)
-    feature_vector_t = matrix_transpose(feature_vector)
-    input_x_y = [list(a) for a in zip(x_minus_mean, y_minus_mean)]
-    input_t = matrix_transpose(input_x_y)
-    logging.info(feature_vector_t)
-    logging.info(input_t)
-    result = matrix_multiply(feature_vector_t, input_t)
-    logging.info(result)
+    # feature_vector = vector_to_matrix(feature_vector)
+    # feature_vector_t = matrix_transpose(feature_vector)
+    # input_x_y = [list(a) for a in zip(x_minus_mean, y_minus_mean)]
+    # input_t = matrix_transpose(input_x_y)
+    # logging.info(feature_vector_t)
+    # logging.info(input_t)
+    # result = matrix_multiply(feature_vector_t, input_t)
+    # logging.info(result)
 
     logging.info("*******PLOT*******")
-    plt.plot(x_minus_mean, y_minus_mean, '+', color='black')
-    plt.plot(0, 0, 'x', color='blue')
+    plt.plot(x_minus_mean, y_minus_mean, '+', color='black', label='Dados ajustados')
+    plt.plot(0, 0, 'x', color='blue', label='Média')
     min_x = min(x_minus_mean)
     max_x = max(x_minus_mean)
     pca_1_x = [min_x, 0, max_x]
     pca_1_y = [min_x * gradient_1, 0, max_x * gradient_1]
-    plt.plot(pca_1_x, pca_1_y, color='red')
+    plt.plot(pca_1_x, pca_1_y, color='red', label='Componente principal')
 
     pca_2_x = [min_x, 0, max_x]
     pca_2_y = [min_x * gradient_2, 0, max_x * gradient_2]
-    plt.plot(pca_2_x, pca_2_y, color='orange')
+    plt.plot(pca_2_x, pca_2_y, color='orange', label='Componente secundário')
+
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05))
+    plt.tight_layout()
     plt.title("Dataset: " + dataset)
     plt.show()
+    # plt.savefig("./images/" + dataset + ".png")
 
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
