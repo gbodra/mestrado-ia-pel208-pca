@@ -158,6 +158,8 @@ def calc_pca(dataset):
     logging.info("*******COMPONENTES*******")
     feature_vector = v[:, np.argmax(w)]
     gradient_1 = feature_vector[1] / feature_vector[0]
+    feature_vector_2 = v[:, np.argmin(w)]
+    gradient_2 = feature_vector_2[1] / feature_vector_2[0]
     logging.info(feature_vector)
 
     logging.info("*******VALORES FINAIS*******")
@@ -176,10 +178,21 @@ def calc_pca(dataset):
     min_x = min(x_minus_mean)
     max_x = max(x_minus_mean)
     pca_1_x = [min_x, 0, max_x]
-    pca_1y = [min_x * gradient_1, 0, max_x * gradient_1]
-    plt.plot(pca_1_x, pca_1y, color='red')
+    pca_1_y = [min_x * gradient_1, 0, max_x * gradient_1]
+    plt.plot(pca_1_x, pca_1_y, color='red')
+
+    pca_2_x = [min_x, 0, max_x]
+    pca_2_y = [min_x * gradient_2, 0, max_x * gradient_2]
+    plt.plot(pca_2_x, pca_2_y, color='orange')
+    plt.title("Dataset: " + dataset)
     plt.show()
 
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 calc_pca("dummy")
+
+calc_pca("alpswater")
+
+calc_pca("US_Census")
+
+calc_pca("economic_growth")
