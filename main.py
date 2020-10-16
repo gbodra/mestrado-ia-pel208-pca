@@ -1,6 +1,7 @@
 import logging
 import sys
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def load_file(filename):
@@ -122,33 +123,63 @@ def matrix_multiply(a, b):
     return result_matrix
 
 
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-x, y = load_file("dummy")
-logging.debug("*******INPUT*******")
-logging.debug(x)
-logging.debug(y)
+def vector_to_matrix(vector):
+    if isinstance(vector[0], list):
+        raise ArithmeticError('Não é um vetor')
 
-logging.debug("*******MEAN SUBTRACTED*******")
-x_minus_mean, y_minus_mean = subtract_mean(x, y)
-logging.debug(x_minus_mean)
-logging.debug(y_minus_mean)
+    matrix = matrix_empty(len(vector), 1)
+    for i in range(len(vector)):
+        matrix[i][0] = vector[i]
 
-logging.debug("*******COVARIANCE MATRIX*******")
-cov = covariance_matrix(x_minus_mean, y_minus_mean)
-logging.debug(cov)
+    return matrix
 
-logging.debug("*******AUTOVALOR / AUTOVETOR*******")
-cov_np = np.array(cov)
-w, v = np.linalg.eig(cov_np)
-logging.debug(w)
-logging.debug(v)
 
-logging.debug("*******COMPONENTES*******")
-feature_vector = v[np.argmax(w)]
-logging.debug(feature_vector)
+def calc_pca(dataset):
+    x, y = load_file(dataset)
+    logging.info("*******INPUT*******")
+    logging.info(x)
+    logging.info(y)
 
-logging.debug("*******VALORES FINAIS*******")
-feature_vector_t = matrix_transpose(feature_vector)
-logging.debug([x_minus_mean, y_minus_mean])
-result = matrix_multiply(feature_vector_t, [x_minus_mean])
-logging.debug(result)
+    logging.info("*******MEAN SUBTRACTED*******")
+    x_minus_mean, y_minus_mean = subtract_mean(x, y)
+    logging.info(x_minus_mean)
+    logging.info(y_minus_mean)
+
+    logging.info("*******COVARIANCE MATRIX*******")
+    cov = covariance_matrix(x_minus_mean, y_minus_mean)
+    logging.info(cov)
+
+    logging.info("*******AUTOVALOR / AUTOVETOR*******")
+    cov_np = np.array(cov)
+    w, v = np.linalg.eig(cov_np)
+    logging.info(w)
+    logging.info(v)
+
+    logging.info("*******COMPONENTES*******")
+    feature_vector = v[:, np.argmax(w)]
+    gradient_1 = feature_vector[1] / feature_vector[0]
+    logging.info(feature_vector)
+
+    logging.info("*******VALORES FINAIS*******")
+    feature_vector = vector_to_matrix(feature_vector)
+    feature_vector_t = matrix_transpose(feature_vector)
+    input_x_y = [list(a) for a in zip(x_minus_mean, y_minus_mean)]
+    input_t = matrix_transpose(input_x_y)
+    logging.info(feature_vector_t)
+    logging.info(input_t)
+    result = matrix_multiply(feature_vector_t, input_t)
+    logging.info(result)
+
+    logging.info("*******PLOT*******")
+    plt.plot(x_minus_mean, y_minus_mean, '+', color='black')
+    plt.plot(0, 0, 'x', color='blue')
+    min_x = min(x_minus_mean)
+    max_x = max(x_minus_mean)
+    pca_1_x = [min_x, 0, max_x]
+    pca_1y = [min_x * gradient_1, 0, max_x * gradient_1]
+    plt.plot(pca_1_x, pca_1y, color='red')
+    plt.show()
+
+
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+calc_pca("dummy")
