@@ -17,9 +17,9 @@
 - PCA com dois componentes
     - alpswater
     
-    ![alt text](https://raw.githubusercontent.com/gbodra/mestrado-ia-pel208-pca/main/images/alpswater.png "alpswater")
+    ![alt text](https://raw.githubusercontent.com/gbodra/mestrado-ia-pel208-pca/main/images/alpswater_1.png "alpswater")
     
     - US_Census
     
-    ![alt text](https://raw.githubusercontent.com/gbodra/mestrado-ia-pel208-pca/main/images/US_Census.png "US_Census")
+    ![alt text](https://raw.githubusercontent.com/gbodra/mestrado-ia-pel208-pca/main/images/US_Census_1.png "US_Census")
     
